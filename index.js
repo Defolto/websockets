@@ -11,8 +11,9 @@ const webSocketServer = new WebSocket.Server({ server });
 
 webSocketServer.on("connection", (ws) => {
   ws.on("message", (m) => {
-    console.log(m.toString());
-    webSocketServer.clients.forEach((client) => client.send(m));
+    const str = m.toString();
+    const obj = JSON.parse(str);
+    webSocketServer.clients.forEach((client) => client.send(JSON.stringify({ message: obj.message, id: 69 })));
   });
 
   ws.on("error", (e) => ws.send(e));
