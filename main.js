@@ -1,29 +1,33 @@
-// Узнать ip можно в терминале через ipconfig 
+// Узнать ip можно в терминале через ipconfig
 export const wsConnection = new WebSocket("ws://192.168.0.106:8999");
 
 wsConnection.onopen = function () {
-  alert("Соединение установлено.");
+  console.log("Соединение установлено.");
 };
 
 wsConnection.onclose = function (event) {
   if (event.wasClean) {
-    alert("Соединение закрыто чисто");
+    console.log("Соединение закрыто чисто");
   } else {
-    alert("Обрыв соединения"); // например, "убит" процесс сервера
+    console.log("Обрыв соединения"); // например, "убит" процесс сервера
   }
-  alert("Код: " + event.code + " причина: " + event.reason);
+  console.log("Код: " + event.code + " причина: " + event.reason);
 };
 
 wsConnection.onerror = function (error) {
-  alert("Ошибка " + error.message);
+  console.log("Ошибка " + error.message);
 };
 
 document.querySelector("button").addEventListener("click", () => {
-  wsConnection.send(JSON.stringify({ event: "chat-message", payload: { userName: "Max", age: 24 } }));
+  const message = document.querySelector("input").value;
+  document.querySelector("input").value = "";
+  wsConnection.send(JSON.stringify(message));
 });
 
+const chat = document.querySelector(".chat");
 wsConnection.onmessage = function (event) {
-  event.data.text().then(res=>{
-    console.log(res);
+  event.data.text().then((res) => {
+    const message = res.replace(/"/g, '');
+    chat.insertAdjacentHTML("beforeend", `<p>${message}</p>`);
   });
 };
