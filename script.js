@@ -1,5 +1,6 @@
 // Узнать ip можно в терминале через ipconfig
-export const wsConnection = new WebSocket("ws://192.168.0.106:8999");
+const ip = "192.168.0.106"
+export const wsConnection = new WebSocket(`ws://${ip}:8999`);
 
 wsConnection.onopen = function () {
   console.log("Соединение установлено.");
@@ -22,6 +23,7 @@ document.querySelector("button").addEventListener("click", () => {
   const message = document.querySelector("input").value;
   document.querySelector("input").value = "";
   wsConnection.send(JSON.stringify({ message, numberRoom: 1 }));
+  console.log(wsConnection);
 });
 
 const chat = document.querySelector(".chat");

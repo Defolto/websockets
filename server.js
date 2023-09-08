@@ -10,6 +10,7 @@ const server = http.createServer(app);
 const webSocketServer = new WebSocket.Server({ server });
 
 webSocketServer.on("connection", (ws) => {
+  ws.send(JSON.stringify({ message: "Салам пополам", id: 69 }))
   ws.on("message", (m) => {
     const str = m.toString();
     const obj = JSON.parse(str);
